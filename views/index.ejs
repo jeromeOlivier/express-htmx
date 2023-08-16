@@ -6,29 +6,35 @@
     <script src='https://unpkg.com/htmx.org@1.5.0'></script>
     <style>
       body {
-        padding: 20px;
+        padding : 20px;
       }
+
       table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
+        font-family     : arial, sans-serif;
+        border-collapse : collapse;
+        width           : 100%;
       }
+
       tr.htmx-swapping td {
-        opacity: 0;
-        transition: opacity 0.5s ease-out;
+        opacity    : 0;
+        transition : opacity 0.5s ease-out;
       }
+
       tr:nth-child(even) {
-        background-color: #dddddd;
+        background-color : #dddddd;
       }
     </style>
   </head>
   <body>
     <h1>Book Recommendations</h1>
-    <form hx-post="/submit" hx-swap="beforeend" hx-target="#new-book" class="mb-3">
+    <form id="bookform" hx-post="/submit" hx-swap="beforeend" hx-trigger="submit" hx-target="#new-book" class="mb-3">
       <input type="text" placeholder="Book Title" name="title" class="form-control mb-3">
       <input type="text" placeholder="Book Author" name="author" class="form-control mb-3">
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    <script>
+      document.body.addEventListener('htmx:afterOnLoad', () => document.querySelector("#bookform").reset());
+    </script>
     <table>
       <thead>
         <tr>
@@ -37,15 +43,15 @@
         </tr>
       </thead>
       <tbody id="new-book" hx-target="closest tr" hx-swap="outerHTML swap:0.5s">
-        <% books.forEach(function(book) { %>
+        <% books.map((book) => { %>
           <tr>
-            <td><%= book.name %></td>
-            <td><%= book.author %></td>
+            <td><%= book.name; %></td>
+            <td><%= book.author; %></td>
             <td>
-              <button class="btn btn-primary" hx-get="/get-edit-form/<%= book.id %>">Edit Book</button>
+              <button class="btn btn-primary" hx-get="/get-edit-form/<%= book.id; %>">Edit Book</button>
             </td>
             <td>
-              <button hx-delete="/delete/<%= book.id %>" class="btn btn-danger">Delete</button>
+              <button hx-delete="/delete/<%= book.id; %>" class="btn btn-danger">Delete</button>
             </td>
           </tr>
         <% }); %>
