@@ -4,7 +4,7 @@ const sequelize = require('./app/model/dbconfig');
 const Book = require('./app/model/book');
 
 // automatically creating table on startup
-sequelize.sync({force: true}).then(async () => {
+sequelize.sync({force: false}).then(async () => {
   console.log('db is ready...');
 });
 
